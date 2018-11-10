@@ -54,6 +54,8 @@ export default class ShelterMap extends Component {
 	this.tempoUp = this.startTimer.bind(this);
   this.tempoDown = this.startTimer.bind(this);
   this.resetZoom = this.resetZoom.bind(this);
+  this.count = 0;
+  this.nextCount = 0;
 	this.state = {
 	  time: {}, seconds: 0, speed: 10,
 		
@@ -126,33 +128,33 @@ export default class ShelterMap extends Component {
   
   tempoUp() {
 	  let speed  = this.state.speed;
-	  let seconds = this.state.seconds;
+	  //let seconds = this.state.seconds;
 	  
 	  speed = speed/10;
 	  this.setState({
-		  speed:speed,
-		  time: this.secondsToTime(seconds),
-      seconds: seconds,
+		  speed:speed
+		  //time: this.secondsToTime(seconds),
+      //seconds: seconds,
 	  });
   }
   
   tempoDown(){
 	  let speed  = this.state.speed;
-	  let seconds = this.state.seconds;
+	  //let seconds = this.state.seconds;
 	  
 	  speed = speed*10;
 	  this.setState({
-		  speed:speed,
-		  time: this.secondsToTime(seconds),
-      seconds: seconds,
+		  speed:speed
+		  //time: this.secondsToTime(seconds),
+      //seconds: seconds,
 	  });
   }
 
   countDown() {
 	  
 	  let seconds = this.state.seconds;
-	  if(seconds % (1000/this.state.speed) == 0){
-		this.componentDidMountBoo(seconds, (seconds + 1000/this.state.speed - 1),this.state.trainData);
+	  if(seconds % (10000/this.state.speed) == 0){
+		this.componentDidMountBoo(seconds, (seconds + 10000/this.state.speed - 1),this.state.trainData);
 	  }
     // add one second, set state so a re-render happens.
      seconds = seconds+ 1;
@@ -182,7 +184,7 @@ export default class ShelterMap extends Component {
   // Default options are marked with *
     return fetch(url, {
         method: "POST", // *GET, POST, PUT, DELETE, etc.
-        mode: "cors", // no-cors, cors, *same-origin
+       // mode: "cors", // no-cors, cors, *same-origin
         cache: "no-cache", // *default, no-cache, reload, force-cache, only-if-cached
         credentials: "same-origin", // include, same-origin, *omit
         headers: {
@@ -202,11 +204,14 @@ export default class ShelterMap extends Component {
    waitUntil(() => postData(`http://localhost:8080/Railways-Back-end/api/trainStatus?startTime=`+this.getSecondsToTime(start)+`&endTime=`+this.getSecondsToTime(end)+`&stationCheck=true`+`&trackCheck=true`+`&startDay=`+this.getDaysToTime(start), content)
   .then(data => { console.log(data);
   */
-  waitUntil(() => postData(`http://railwaysbackend-env.3mhzppramj.us-east-2.elasticbeanstalk.com/api/trainStatus?startTime=`+this.getSecondsToTime(start)+`&endTime=`+this.getSecondsToTime(end)+`&stationCheck=true`+`&trackCheck=true`+`&startDay=`+this.getDaysToTime(start), content)
+  if(this.count === this.nextCount){
+	  this.nextCount =  this.nextCount+1;
+  waitUntil(() => postData(`http://railwaysbackend-env2.3mhzppramj.us-east-2.elasticbeanstalk.com/api/trainStatus?startTime=`+this.getSecondsToTime(start)+`&endTime=`+this.getSecondsToTime(end)+`&stationCheck=true`+`&trackCheck=true`+`&startDay=`+this.getDaysToTime(start), content)
   .then(data => { console.log(data);
 	  if (data.trainDetail.length > 0 ){
 	  this.setState({trains: data.trainDetail});
 	  this.setState({trainData: data});
+	  this.count = this.count +1;
 	  }
 	  
 	  
@@ -214,6 +219,7 @@ export default class ShelterMap extends Component {
   .catch(error => console.error(error)));
 
   
+  }
   }
 
   handleClick = (marker) => {
