@@ -13,7 +13,7 @@ import 'react-table/react-table.css'
 const MapWithAMarker = compose(withScriptjs, withGoogleMap)(props => {
 
   return (
-    <GoogleMap  zoom={props.defaultZoom} center={{lat: props.lat, lng:props.lng}} onZoomChanged={props.onZoomChanged} onCenterChanged={props.onCenterChanged} >
+    <GoogleMap  zoom={props.defaultZoom} center={{lat: props.lat, lng:props.lng}} >
       {props.markers.map(marker => {
         const onClick = props.onClick.bind(this, marker)
 		return (
@@ -51,13 +51,13 @@ export default class ShelterMap extends Component {
     this.startTimer = this.startTimer.bind(this);
 	this.stopTimer = this.stopTimer.bind(this);
 	this.countDown = this.countDown.bind(this);
-	this.tempoUp = this.startTimer.bind(this);
-  this.tempoDown = this.startTimer.bind(this);
+	this.tempoUp = this.tempoUp.bind(this);
+  this.tempoDown = this.tempoDown.bind(this);
   this.resetZoom = this.resetZoom.bind(this);
   this.count = 0;
   this.nextCount = 0;
 	this.state = {
-	  time: {}, seconds: 0, speed: 10,
+	  time: {}, seconds: 0, speed: 100,
 		
 	  trainData : {},
       trains: [],
@@ -322,8 +322,7 @@ export default class ShelterMap extends Component {
 			<button onClick={this.startTimer}>Start</button>
 			 d:{this.state.time.d} h:{this.state.time.h}  m:{this.state.time.m}  s:{this.state.time.s} 
 			<button onClick={this.stopTimer}>Stop</button>
-			<button onClick={this.tempoUp}>Tempo Up</button>
-			<button onClick={this.tempoDown}>Tempo Down</button>
+			
       <button alignright onClick={this.resetZoom}>Reset Zoom</button>
         </p>
 		 <MapWithAMarker
@@ -332,8 +331,6 @@ export default class ShelterMap extends Component {
         markers={this.state.trains}
         onClick={this.handleClick}
         defaultZoom={this.state.zoom}
-        onZoomChanged={this.onZoomChanged.bind(this)}
-        onCenterChanged={this.onCenterChanged.bind(this)}
         lat={this.state.center.zoomLat}
         lng={this.state.center.zoomLong}
         googleMapURL="https://maps.googleapis.com/maps/api/js?v=3.exp&libraries=geometry,drawing,places"
@@ -348,10 +345,10 @@ export default class ShelterMap extends Component {
     return {
       onClick: (e, handleOriginal) => {
         console.log("A Td Element was clicked!");
-        console.log("it produced this event:", e);
-        console.log("It was in this column:", column);
-        console.log("It was in this row:", rowInfo);
-        console.log("It was in this table instance:", instance);
+        //console.log("it produced this event:", e);
+        //console.log("It was in this column:", column);
+        //console.log("It was in this row:", rowInfo);
+        //console.log("It was in this table instance:", instance);
 
         // IMPORTANT! React-Table uses onClick internally to trigger
         // events like expanding SubComponents and pivots.
@@ -386,8 +383,7 @@ export default class ShelterMap extends Component {
 			<button onClick={this.startTimer}>Start</button>
 			 d:{this.state.time.d}  h:{this.state.time.h}  m:{this.state.time.m}  s:{this.state.time.s} 
 			<button onClick={this.stopTimer}>Stop</button>
-			<button onClick={this.tempoUp}>Tempo Up</button>
-			<button onClick={this.tempoDown}>Tempo Down</button>
+			
       <button alignright onClick={this.resetZoom}>Reset Zoom</button>
         </p>
 		 <MapWithAMarker
@@ -396,8 +392,7 @@ export default class ShelterMap extends Component {
         markers={this.state.trains}
         onClick={this.handleClick}
         defaultZoom={this.state.zoom}
-        onZoomChanged={this.onZoomChanged.bind(this)}
-        onCenterChanged={this.onCenterChanged.bind(this)}
+      
         lat={this.state.center.zoomLat}
         lng={this.state.center.zoomLong}
         googleMapURL="https://maps.googleapis.com/maps/api/js?v=3.exp&libraries=geometry,drawing,places"
