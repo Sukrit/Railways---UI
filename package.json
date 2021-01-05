@@ -4,7 +4,7 @@
   "private": true,
   "dependencies": {
     "aws-sdk": "^2.353.0",
-    "axios": "^0.18.0",
+    "axios": "^0.21.1",
     "react": "^16.4.1",
     "react-dom": "^16.4.1",
     "react-google-maps": "^9.4.5",
