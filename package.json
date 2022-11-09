@@ -9,7 +9,7 @@
     "react-dom": "^16.4.1",
     "react-google-maps": "^9.4.5",
     "react-native-maps": "^0.22.0",
-    "react-scripts": "1.1.4",
+    "react-scripts": "5.0.1",
     "react-table": "^6.8.6",
     "request": "^2.88.0"
   },
